@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-p = 11
+p = 17
 
 nums = range(p)
 points = [(x, y) for x in nums for y in nums]
