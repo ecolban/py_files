@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-p = 7
+p = 11
+
 nums = range(p)
 points = [(x, y) for x in nums for y in nums]
 dirs = [(1, v) for v in nums] + [(0, 1)]
