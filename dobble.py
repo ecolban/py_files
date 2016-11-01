@@ -4,7 +4,7 @@ gf = range(p)
 
 points = {(x, y) for x in gf for y in gf}
 
-directions = {(1, y) for y in gf} | {(0, 1)}
+directions = {(1, b) for b in gf} | {(0, 1)}
 
 lines = {(a, b, c) for (a, b) in directions for c in gf}
 
@@ -22,8 +22,6 @@ cards = cards_fin | cards_inf
 # OUTPUT
 #====================================================
 
-# pix = [chr(i) for i in range(65, 91)] + [chr(i) for i in range(97, 123)] + list('@#$%&')
-# for c in cards: print(' '.join(pix[i] for i in c))
-
-frmt = '%%0%dd' % len(str(line_at_infinity))
-for c in cards: print(' '.join(frmt % i for i in c))
+card_format = '%%0%dd' % len(str(line_at_infinity))
+for c in cards: 
+    print(' '.join(card_format % i for i in c))
