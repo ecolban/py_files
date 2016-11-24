@@ -1,3 +1,10 @@
+# The idea behind this solutions is to think about a card as a point and
+# the pictures on the card as lines through the point. We know from geometry 
+# that through any two points passes one an only one line. This translates
+# to: For any two cards, there is one and only one picture that the two cards
+# have in common. We use a finite geometry over a finite Galois field and
+# let each point in this geometry represent one card.
+
 p = 7
 
 gf = range(p)
