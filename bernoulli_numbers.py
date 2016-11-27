@@ -1,6 +1,6 @@
 from fractions import Fraction
 
-def bernouilli(n):
+def bernoulli(n):
     a = [Fraction(1, m + 1) for m in range(n + 1)]
     for m in range(n + 1):
         for j in range(m, 0, -1):
