@@ -1,7 +1,7 @@
-from random import randrange
+from random import random
 
 def river(w, h):
-    return '\n'.join(', '.join('%0.1f' % (randrange(21) / 10.0) for _ in range(w)) for _ in range(h))
+    return '\n'.join(', '.join('%g' % (2 * random()) for _ in range(w)) for _ in range(h))
 
 class Node(object):
 
@@ -10,11 +10,11 @@ class Node(object):
         self.col = c
         self.depth = d
         self.path_depth = 1.0e6 #infinity
+        self.path_length = 1.0e6 #infinity
         self.checked = False
         self.pred = None
 
-    def __lt__(self, other):
-        return self.path_depth < other.path_depth
+    def __lt__(self, other): False
 
 from heapq import heappush, heappop
 
@@ -31,28 +31,30 @@ def shallowest_path(river):
                             for j in range(max(0, c - 1), min(cols, c + 2)) if i != r or j != c}
 
     def path_to(node):
-        result = []
+        res = []
         while node:
-            result.append(node)
+            res.append(node)
             node = node.pred
-        return [(n.row, n.col, n.depth) for n in reversed(result)]
+        res.reverse()
+        return res
 
     visited = []
 
     # Visit the cells on the left bank
-    for r in range(len(nodes)):
-        nodes[r][0].path_depth = nodes[r][0].depth
-        heappush(visited, nodes[r][0])
+    for node, *_ in nodes:
+        node.path_depth, node.path_length = node.depth, 1
+        heappush(visited, (node.path_depth, 1, node))
 
     # If a node is checked, its path_depth is final. 
     # The path_depth of a checked node is less than or equal to the final path_depth of all unchecked nodes.
     while visited:
-        node = heappop(visited)
-        node.checked = True
-        r, c, pd = node.row, node.col, node.path_depth
-        if c == cols - 1: return path_to(node), pd #right bank reached
+        pd, pl, node = heappop(visited)
+        r, c = node.row, node.col
+        if c == cols - 1: return [(n.row, n.col) for n in path_to(node)], pd, pl #right bank reached
         for nb in neighbors(r, c):
-            if not nb.checked and pd < nb.path_depth and nb.depth < nb.path_depth:
-                nb.path_depth = max(nb.depth, pd)
+            d = max(nb.depth, pd)
+            if not nb.checked and (nb.path_depth, nb.path_length) > (d, pl + 1):
                 nb.pred = node
-                heappush(visited, nb)
+                nb.path_depth, nb.path_length = d, pl + 1
+                heappush(visited, (d, pl + 1, nb))
+        node.checked = True
