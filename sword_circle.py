@@ -32,5 +32,8 @@ def sc(n):
         res = (res + 2) % i
     return res + 1
 
+def sc_bin(n):
+    return int(bin(n)[3:]+'1', 2)
+
 
 
